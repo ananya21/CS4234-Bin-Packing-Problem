@@ -3,7 +3,21 @@ import argparse
 import json
 from typing import List
 
-#  example run: python3 offline-test.py --n 50 --dist heavy --seed 42 --save test_items.json
+#  example run: python3 test.py --n 50 --dist heavy --seed 42 --save test_items.json
+## Arshelle
+
+def generate_light_tail_items(n: int) -> List[float]:
+    """Generate items with more large items and fewer small ones."""
+    items = []
+    for _ in range(n):
+        r = random.random()
+        if r < 0.7:
+            items.append(round(random.uniform(0.7, 1.0), 4))   # 70% large
+        elif r < 0.9:
+            items.append(round(random.uniform(0.3, 0.7), 4))   # 20% medium
+        else:
+            items.append(round(random.uniform(0.05, 0.3), 4))  # 10% small
+    return items
 
 def generate_uniform_items(n: int) -> List[float]:
     """Generate n items with sizes uniformly distributed in (0, 1]."""
@@ -40,7 +54,7 @@ def main():
     parser = argparse.ArgumentParser(description="Offline Bin Packing Test Case Generator")
     parser.add_argument("--n", type=int, default=100, help="Number of items to generate")
     parser.add_argument("--seed", type=int, default=None, help="Random seed (optional)")
-    parser.add_argument("--dist", choices=["uniform", "normal", "heavy"], default="uniform", help="Distribution type")
+    parser.add_argument("--dist", choices=["uniform", "normal", "heavy", "light"], default="uniform", help="Distribution type")
     parser.add_argument("--save", type=str, default=None, help="Optional filename to save items as JSON")
     args = parser.parse_args()
 
@@ -53,6 +67,8 @@ def main():
         items = generate_normal_items(args.n)
     elif args.dist == "heavy":
         items = generate_heavy_tail_items(args.n)
+    elif args.dist == "light":
+        items = generate_light_tail_items(args.n)
     else:
         raise ValueError("Unknown distribution type.")
 
