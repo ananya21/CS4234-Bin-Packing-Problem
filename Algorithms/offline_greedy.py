@@ -5,7 +5,7 @@ import json
 import time
 
 def first_fit(items, capacity=1.0):
-    items.sort()
+    items.sort(reverse = True)
     bins = []
     for item in items:
         placed = False
@@ -19,7 +19,7 @@ def first_fit(items, capacity=1.0):
     return bins
 
 def best_fit(items, capacity=1.0):
-    items.sort()
+    items.sort(reverse = True)
     bins = []
     for item in items:
         best_bin_index = -1
@@ -36,7 +36,7 @@ def best_fit(items, capacity=1.0):
     return bins
 
 def next_fit(items, capacity=1.0):
-    items.sort()
+    items.sort(reverse = True)
     bins = []
     current_bin = []
     current_bin_sum = 0.0
